@@ -51,151 +51,95 @@ void MagicalContainer::removeElement(int data)
 }
 void MagicalContainer::addElement(int data)
 {
-    std::cout << "im here" << std::endl;
     identfy_primeValue(data);
-    std::cout << "im here" << std::endl;
     ADTNode *new_one = new ADTNode(data);
-    std::cout << "im  not here here" << std::endl;
-
-    // init the list
-    if (_Head == nullptr && _primeH == nullptr && !(_primeValue))
+    /***
+     * In this alternative implementation,we use two pointers pCurr and pPrev to traverse the list.
+     * We iterate through the list until we find the correct position for insertion.
+     * If the list is empty, the new node becomes both the head and tail. If the new node should be inserted at the beginning,
+     * we update the necessary pointers and make it the new head. If the new node should be inserted at the end,
+     * we update the necessary pointers and make it the new tail.
+     * for all other cases,we update the pointers of the previous node, new node, current node,and the node following the new node.
+     * finally, we increment the _size counter to reflect the addition of the new node.
+     */
+    if (_Head == nullptr)
     {
         _Head = new_one;
         _Tail = new_one;
-        // _primeH = new_one;
-        // _primeT = new_one;
-
-        // update counter of size element's
-        // _primeS++;
-        _size++;
-        std::cout << "im   here here first if " << std::endl;
-        return;
     }
-
-    if (_Head == nullptr && _primeH == nullptr && _primeValue)
+    else
     {
-        _Head = new_one;
-        _Tail = new_one;
-        _primeH = new_one;
-        _primeT = new_one;
-        std::cout << "im   here here seconed if " << std::endl;
+        ADTNode *pCurr = _Head;
+        ADTNode *pPrev = nullptr;
 
-        // update counter of size element's
-        _primeS++;
-        _size++;
+        while (pCurr && pCurr->node_Value() < data)
+        {
+            pPrev = pCurr;
+            pCurr = pCurr->get_Next();
+        }
 
-        return;
-    }
-    // there no need to update the tail because just add the first prime element(the tail stay nullptr)
-    if (_Head != nullptr && _primeH == nullptr && _primeValue)
-    {
-        // update the head to right object
-        _primeH = new_one;
-        if (new_one->node_Value() < _Head->node_Value())
+        if (pPrev == nullptr)
         {
             new_one->set_Next(_Head);
             _Head->set_Back(new_one);
             _Head = new_one;
-            // update counter of size element's
-            _primeS++;
-            _size++;
-            return;
         }
-        ADTNode *curr = _Head;
-        // iterat to right place
-        while (curr->get_Next() && curr->get_Next()->node_Value() < new_one->node_Value())
+        else if (pCurr == nullptr)
         {
-            curr = curr->get_Next();
-        }
-
-        if (curr->get_Next() == nullptr) // tail case
-        {
-            new_one->set_Back(curr);
-            curr->set_Next(new_one);
+            pPrev->set_Next(new_one);
+            new_one->set_Back(pPrev);
             _Tail = new_one;
         }
-        else // 'middle' case
+        else
         {
-            new_one->set_Back(curr);
-            new_one->set_Next(curr->get_Next());
-            curr->set_Next(new_one);
-            new_one->get_Next()->set_Back(new_one);
+            pPrev->set_Next(new_one);
+            new_one->set_Back(pPrev);
+            new_one->set_Next(pCurr);
+            pCurr->set_Back(new_one);
         }
-        // update counter of size element's
-        _size++;
-        return;
     }
-    if (_Head != nullptr && _primeH != nullptr && !(_primeValue))
+
+    _size++;
+    // in addittion if it's prime node we need to care about it
+    if (_primeValue)
     {
-
-        if (new_one->node_Value() < _Head->node_Value())
+        if (_primeH == nullptr)
         {
-            new_one->set_Next(_Head);
-            _Head->set_Back(new_one);
-            _Head = new_one;
-            // update counter of size element's
-            _size++;
-            return;
-        }
-
-        ADTNode *curr = _Head;
-        // iterat to right place
-        while (curr->get_Next() && curr->get_Next()->node_Value() < new_one->node_Value())
-        {
-            curr = curr->get_Next();
-        }
-
-        if (curr->get_Next() == nullptr) // tail case
-        {
-            new_one->set_Back(curr);
-            curr->set_Next(new_one);
-            _Tail = new_one;
-        }
-        else // 'middle' case
-        {
-            new_one->set_Back(curr);
-            new_one->set_Next(curr->get_Next());
-            curr->set_Next(new_one);
-            new_one->get_Next()->set_Back(new_one);
-        }
-        // update counter of size element's
-        _size++;
-        return;
-    }
-    if (_Head != nullptr && _primeH != nullptr && _primeValue)
-    {
-        if (new_one->node_Value() < _primeH->node_Value())
-        {
-            new_one->set_PNext(_primeH);
-            _primeH->set_PBack(new_one);
             _primeH = new_one;
+            _primeT = new_one;
             return;
         }
 
         ADTNode *pCurr = _primeH;
-        while (pCurr->get_PNext() && pCurr->get_PNext()->node_Value() < new_one->node_Value())
-        {
-            pCurr = pCurr->get_PNext();
-        }
 
-        if (pCurr->get_PNext() == nullptr) // prime-tail case
+        if (new_one->node_Value() < pCurr->node_Value())
         {
-            new_one->set_PBack(pCurr);
-            pCurr->set_PNext(new_one);
-            _primeT = new_one;
+            new_one->set_PNext(pCurr);
+            pCurr->set_PBack(new_one);
+            _primeH = new_one;
         }
-        else // 'middle' case
+        else
         {
+            while (pCurr->get_PNext() && pCurr->get_PNext()->node_Value() < new_one->node_Value())
+            {
+                pCurr = pCurr->get_PNext();
+            }
+
             new_one->set_PBack(pCurr);
             new_one->set_PNext(pCurr->get_PNext());
-            pCurr->set_PNext(new_one);
-            new_one->get_PNext()->set_PBack(new_one);
-        }
 
-        // update counter of size element's
+            if (pCurr->get_PNext() == nullptr)
+            {
+                pCurr->set_PNext(new_one);
+                _primeT = new_one;
+            }
+            else
+            {
+                pCurr->set_PNext(new_one);
+                new_one->get_PNext()->set_PBack(new_one);
+            }
+        }
         _primeS++;
-        _size++;
-        return;
     }
 }
 
