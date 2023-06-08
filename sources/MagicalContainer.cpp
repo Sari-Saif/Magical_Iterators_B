@@ -69,33 +69,33 @@ void MagicalContainer::addElement(int data)
     }
     else
     {
-        ADTNode *pCurr = _Head;
-        ADTNode *pPrev = nullptr;
+        ADTNode *Curr = _Head;
+        ADTNode *Prev = nullptr;
 
-        while (pCurr && pCurr->node_Value() < data)
+        while (Curr && Curr->node_Value() < data)
         {
-            pPrev = pCurr;
-            pCurr = pCurr->get_Next();
+            Prev = Curr;
+            Curr = Curr->get_Next();
         }
 
-        if (pPrev == nullptr)
+        if (Prev == nullptr)
         {
             new_one->set_Next(_Head);
             _Head->set_Back(new_one);
             _Head = new_one;
         }
-        else if (pCurr == nullptr)
+        else if (Curr == nullptr)
         {
-            pPrev->set_Next(new_one);
-            new_one->set_Back(pPrev);
+            Prev->set_Next(new_one);
+            new_one->set_Back(Prev);
             _Tail = new_one;
         }
         else
         {
-            pPrev->set_Next(new_one);
-            new_one->set_Back(pPrev);
-            new_one->set_Next(pCurr);
-            pCurr->set_Back(new_one);
+            Prev->set_Next(new_one);
+            new_one->set_Back(Prev);
+            new_one->set_Next(Curr);
+            Curr->set_Back(new_one);
         }
     }
 
