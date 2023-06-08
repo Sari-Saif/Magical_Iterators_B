@@ -16,16 +16,22 @@
 
 namespace ariel
 {
-    class MagicalContainer //NOLINT
+    class MagicalContainer // NOLINT
     {
     private:
         // data members
         int _size;
-        int _primeS;      // prime size
+        int _primeS; // prime size
+        // nodes for linked list
         ADTNode *_Head;   // NOLINT
         ADTNode *_Tail;   // NOLINT
         ADTNode *_primeH; // NOLINT
         ADTNode *_primeT; // NOLINT
+
+        bool _primeValue; // NOLINT
+        // helpe function's;
+        ADTNode *MagicalContainer::remove_Node(int);
+        ADTNode *MagicalContainer::remove_Nodep(int);
 
     public:
         // Constructor
@@ -38,6 +44,8 @@ namespace ariel
         void removeElement(int);
         // Get the size of the container
         int size() const;
+        // to identfy primevalue
+        void identfy_primeValue(int);
 
         class SideCrossIterator // NOLINT
         {
