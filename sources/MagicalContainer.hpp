@@ -30,8 +30,8 @@ namespace ariel
 
         bool _primeValue; // NOLINT
         // helpe function's;
-        ADTNode *MagicalContainer::remove_Node(int);
-        ADTNode *MagicalContainer::remove_Nodep(int);
+        ADTNode *remove_Node(int);
+        ADTNode *remove_Nodep(int);
 
     public:
         // Constructor

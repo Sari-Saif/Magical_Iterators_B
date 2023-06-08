@@ -20,13 +20,13 @@ namespace ariel
         // ctor
         ADTNode(int);
         // getters and setters
-        ADTNode *getNext();
+        ADTNode *get_Next();
         ADTNode *get_PNext();
-        ADTNode *getBack();
+        ADTNode *get_Back();
         ADTNode *get_PBack();
-        void setNext(ADTNode *);
+        void set_Next(ADTNode *);
         void set_PNext(ADTNode *);
-        void setBack(ADTNode *);
+        void set_Back(ADTNode *);
         void set_PBack(ADTNode *);
         int node_Value();
         // used for tracking(debuging) and print elements

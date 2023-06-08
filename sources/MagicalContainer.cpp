@@ -21,12 +21,13 @@ MagicalContainer::~MagicalContainer()
 }
 void MagicalContainer::removeElement(int data)
 {
+    // identfy prime's
+    identfy_primeValue(data);
     // pointer on Detached Node
     ADTNode *Detached = remove_Node(data);
     // pointer in Detached prime Node
     ADTNode *pPrimeRemoved = nullptr;
-    // identfy prime's
-    identfy_primeValue(data);
+
     if (this->_primeValue)
     {
         pPrimeRemoved = remove_Nodep(data);
@@ -45,11 +46,157 @@ void MagicalContainer::removeElement(int data)
     }
     else
     {
-        throw std::runtime_error("Can't remove value that doesn't exist!");
+        throw std::runtime_error(" there no node  with this value !");
     }
 }
 void MagicalContainer::addElement(int data)
 {
+    std::cout << "im here" << std::endl;
+    identfy_primeValue(data);
+    std::cout << "im here" << std::endl;
+    ADTNode *new_one = new ADTNode(data);
+    std::cout << "im  not here here" << std::endl;
+
+    // init the list
+    if (_Head == nullptr && _primeH == nullptr && !(_primeValue))
+    {
+        _Head = new_one;
+        _Tail = new_one;
+        // _primeH = new_one;
+        // _primeT = new_one;
+
+        // update counter of size element's
+        // _primeS++;
+        _size++;
+        std::cout << "im   here here first if " << std::endl;
+        return;
+    }
+
+    if (_Head == nullptr && _primeH == nullptr && _primeValue)
+    {
+        _Head = new_one;
+        _Tail = new_one;
+        _primeH = new_one;
+        _primeT = new_one;
+        std::cout << "im   here here seconed if " << std::endl;
+
+        // update counter of size element's
+        _primeS++;
+        _size++;
+
+        return;
+    }
+    // there no need to update the tail because just add the first prime element(the tail stay nullptr)
+    if (_Head != nullptr && _primeH == nullptr && _primeValue)
+    {
+        // update the head to right object
+        _primeH = new_one;
+        if (new_one->node_Value() < _Head->node_Value())
+        {
+            new_one->set_Next(_Head);
+            _Head->set_Back(new_one);
+            _Head = new_one;
+            // update counter of size element's
+            _primeS++;
+            _size++;
+            return;
+        }
+        ADTNode *curr = _Head;
+        // iterat to right place
+        while (curr->get_Next() && curr->get_Next()->node_Value() < new_one->node_Value())
+        {
+            curr = curr->get_Next();
+        }
+
+        if (curr->get_Next() == nullptr) // tail case
+        {
+            new_one->set_Back(curr);
+            curr->set_Next(new_one);
+            _Tail = new_one;
+        }
+        else // 'middle' case
+        {
+            new_one->set_Back(curr);
+            new_one->set_Next(curr->get_Next());
+            curr->set_Next(new_one);
+            new_one->get_Next()->set_Back(new_one);
+        }
+        // update counter of size element's
+        _size++;
+        return;
+    }
+    if (_Head != nullptr && _primeH != nullptr && !(_primeValue))
+    {
+
+        if (new_one->node_Value() < _Head->node_Value())
+        {
+            new_one->set_Next(_Head);
+            _Head->set_Back(new_one);
+            _Head = new_one;
+            // update counter of size element's
+            _size++;
+            return;
+        }
+
+        ADTNode *curr = _Head;
+        // iterat to right place
+        while (curr->get_Next() && curr->get_Next()->node_Value() < new_one->node_Value())
+        {
+            curr = curr->get_Next();
+        }
+
+        if (curr->get_Next() == nullptr) // tail case
+        {
+            new_one->set_Back(curr);
+            curr->set_Next(new_one);
+            _Tail = new_one;
+        }
+        else // 'middle' case
+        {
+            new_one->set_Back(curr);
+            new_one->set_Next(curr->get_Next());
+            curr->set_Next(new_one);
+            new_one->get_Next()->set_Back(new_one);
+        }
+        // update counter of size element's
+        _size++;
+        return;
+    }
+    if (_Head != nullptr && _primeH != nullptr && _primeValue)
+    {
+        if (new_one->node_Value() < _primeH->node_Value())
+        {
+            new_one->set_PNext(_primeH);
+            _primeH->set_PBack(new_one);
+            _primeH = new_one;
+            return;
+        }
+
+        ADTNode *pCurr = _primeH;
+        while (pCurr->get_PNext() && pCurr->get_PNext()->node_Value() < new_one->node_Value())
+        {
+            pCurr = pCurr->get_PNext();
+        }
+
+        if (pCurr->get_PNext() == nullptr) // prime-tail case
+        {
+            new_one->set_PBack(pCurr);
+            pCurr->set_PNext(new_one);
+            _primeT = new_one;
+        }
+        else // 'middle' case
+        {
+            new_one->set_PBack(pCurr);
+            new_one->set_PNext(pCurr->get_PNext());
+            pCurr->set_PNext(new_one);
+            new_one->get_PNext()->set_PBack(new_one);
+        }
+
+        // update counter of size element's
+        _primeS++;
+        _size++;
+        return;
+    }
 }
 
 int MagicalContainer::size() const
@@ -64,7 +211,7 @@ int MagicalContainer::size() const
 /****
  *
  *
- * need to check for segmention fault , ->O(n)
+ * need to check for segmention fault case , ->O(n)
  */
 
 ADTNode *MagicalContainer::remove_Node(int value)
@@ -76,15 +223,15 @@ ADTNode *MagicalContainer::remove_Node(int value)
 
     // pointer on head and after that iterate on the list
     // mean of iterate is to go over element until reach the node with value
-    ADTNode *pNode = _Head;
-    while (pNode)
+    ADTNode *new_one = _Head;
+    while (new_one)
     {
-        if (pNode->node_Value() == value)
+        if (new_one->node_Value() == value)
         {
-            Detached = pNode;
+            Detached = new_one;
             break;
         }
-        pNode = pNode->getNext();
+        new_one = new_one->get_Next();
     }
     // the deletion part
     if (Detached)
@@ -98,24 +245,24 @@ ADTNode *MagicalContainer::remove_Node(int value)
         // Detached->node_value
         else if (Detached == _Head)
         {
-            _Head = Detached->getNext();
-            _Head->setBack(nullptr);
+            _Head = Detached->get_Next();
+            _Head->set_Back(nullptr);
         }
         // Detached->node_value
         else if (Detached == _Tail)
         {
-            _Tail = Detached->getBack();
+            _Tail = Detached->get_Back();
             if (_Tail)
-                _Tail->setNext(nullptr);
+                _Tail->set_Next(nullptr);
         }
         else
         {
-            Detached->getBack()->setNext(Detached->getNext());
-            Detached->getNext()->setBack(Detached->getBack());
+            Detached->get_Back()->set_Next(Detached->get_Next());
+            Detached->get_Next()->set_Back(Detached->get_Back());
         }
 
-        Detached->setNext(nullptr);
-        Detached->setBack(nullptr);
+        Detached->set_Next(nullptr);
+        Detached->set_Back(nullptr);
     }
 
     return Detached;
@@ -130,15 +277,15 @@ ADTNode *MagicalContainer::remove_Nodep(int value)
 
     ADTNode *Detached = nullptr;
 
-    ADTNode *pNode = _primeH;
-    while (pNode)
+    ADTNode *new_one = _primeH;
+    while (new_one)
     {
-        if (pNode->node_Value() == value)
+        if (new_one->node_Value() == value)
         {
-            Detached = pNode;
+            Detached = new_one;
             break;
         }
-        pNode = pNode->get_PNext();
+        new_one = new_one->get_PNext();
     }
 
     if (Detached)
