@@ -151,13 +151,11 @@ int MagicalContainer::size() const
 /***********************************************************************************************/
 
 /********************************** HELP FUNCTION'S *********************************************/
+/*
+need to check
+*/
 
-/****
- *
- *
- * need to check for segmention fault case , ->O(n)
- */
-
+// TODO:: create print function's to track container operation
 ADTNode *MagicalContainer::remove_Node(int value)
 {
     if (_size == 0)
