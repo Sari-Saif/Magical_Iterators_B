@@ -32,7 +32,7 @@ namespace ariel
         // helpe function's;
         ADTNode *remove_Node(int);
         ADTNode *remove_Nodep(int);
-        
+
         void add_Elem(ADTNode *);
         void insert_Prime(ADTNode *);
 
@@ -54,19 +54,24 @@ namespace ariel
         {
         private:
             MagicalContainer &magic;
-            ADTNode *start;
+            ADTNode *node_fiter;
+            ADTNode *node_tailiter;
+            bool access_iter;
             int _range;
+
+            SideCrossIterator(MagicalContainer &, ADTNode *, ADTNode *);
 
         public:
             // ctor's
             SideCrossIterator(MagicalContainer &);
             SideCrossIterator(SideCrossIterator &);
             ~SideCrossIterator();
+
             SideCrossIterator &operator=(const SideCrossIterator &);
             // the head annd the tail
             SideCrossIterator begin();
             SideCrossIterator end();
-            // oprator's
+            // operator's
             int operator*();
             SideCrossIterator &operator++();
             bool operator==(const SideCrossIterator &) const;
@@ -106,6 +111,7 @@ namespace ariel
             MagicalContainer &magic;
             ADTNode *start;
             int _range;
+            PrimeIterator(MagicalContainer &, int, ADTNode *);
 
         public:
             // ctor's

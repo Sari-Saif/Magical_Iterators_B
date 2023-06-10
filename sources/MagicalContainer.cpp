@@ -66,7 +66,6 @@ void MagicalContainer::addElement(int data)
     // in addittion if it's prime node we need to care about it
     if (prime_defantion)
     {
-        std::cout << "im fucking here2 " << std::endl;
 
         add_Elem(maybe_prime);
         _size++;
@@ -75,7 +74,6 @@ void MagicalContainer::addElement(int data)
     }
     else
     {
-        std::cout << "im fucking here " << std::endl;
         add_Elem(maybe_prime);
         _size++;
     }
