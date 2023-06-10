@@ -7,8 +7,8 @@ using namespace ariel;
 MagicalContainer::MagicalContainer() : _Head(nullptr), _Tail(nullptr), _primeT(nullptr), _primeH(nullptr), _size(0), _primeS(0)
 {
 
-    this->_primeValue = false; // this use - to identfy if the inserted new value is prime or not
-                               // because there specific attitude to insert and delete
+    this->_primeValue = 0; // this use - to identfy if the inserted new value is prime or not
+                           // because there specific attitude to insert and delete
 }
 
 MagicalContainer::~MagicalContainer()
@@ -49,97 +49,35 @@ void MagicalContainer::removeElement(int data)
         throw std::runtime_error(" there no node  with this value !");
     }
 }
+
+/***
+ * In this alternative implementation,we use two pointers iter and pPrev to traverse the list.
+ * We iterate through the list until we find the correct position for insertion.
+ * If the list is empty, the new node becomes both the head and tail. If the new node should be inserted at the beginning,
+ * we update the necessary pointers and make it the new head. If the new node should be inserted at the end,
+ * we update the necessary pointers and make it the new tail.
+ * for all other cases,we update the pointers of the previous node, new node, current node,and the node following the new node.
+ * finally, we increment the _size counter to reflect the addition of the new node.
+ */
 void MagicalContainer::addElement(int data)
 {
-    identfy_primeValue(data);
-    ADTNode *new_one = new ADTNode(data);
-    /***
-     * In this alternative implementation,we use two pointers pCurr and pPrev to traverse the list.
-     * We iterate through the list until we find the correct position for insertion.
-     * If the list is empty, the new node becomes both the head and tail. If the new node should be inserted at the beginning,
-     * we update the necessary pointers and make it the new head. If the new node should be inserted at the end,
-     * we update the necessary pointers and make it the new tail.
-     * for all other cases,we update the pointers of the previous node, new node, current node,and the node following the new node.
-     * finally, we increment the _size counter to reflect the addition of the new node.
-     */
-    if (_Head == nullptr)
+    int prime_defantion = identfy_primeValue(data);
+    ADTNode *maybe_prime = new ADTNode(data);
+    // in addittion if it's prime node we need to care about it
+    if (prime_defantion)
     {
-        _Head = new_one;
-        _Tail = new_one;
+        std::cout << "im fucking here2 " << std::endl;
+
+        add_Elem(maybe_prime);
+        _size++;
+        insert_Prime(maybe_prime);
+        _primeS++;
     }
     else
     {
-        ADTNode *Curr = _Head;
-        ADTNode *Prev = nullptr;
-
-        while (Curr && Curr->node_Value() < data)
-        {
-            Prev = Curr;
-            Curr = Curr->get_Next();
-        }
-
-        if (Prev == nullptr)
-        {
-            new_one->set_Next(_Head);
-            _Head->set_Back(new_one);
-            _Head = new_one;
-        }
-        else if (Curr == nullptr)
-        {
-            Prev->set_Next(new_one);
-            new_one->set_Back(Prev);
-            _Tail = new_one;
-        }
-        else
-        {
-            Prev->set_Next(new_one);
-            new_one->set_Back(Prev);
-            new_one->set_Next(Curr);
-            Curr->set_Back(new_one);
-        }
-    }
-
-    _size++;
-    // in addittion if it's prime node we need to care about it
-    if (_primeValue)
-    {
-        if (_primeH == nullptr)
-        {
-            _primeH = new_one;
-            _primeT = new_one;
-            return;
-        }
-
-        ADTNode *pCurr = _primeH;
-
-        if (new_one->node_Value() < pCurr->node_Value())
-        {
-            new_one->set_PNext(pCurr);
-            pCurr->set_PBack(new_one);
-            _primeH = new_one;
-        }
-        else
-        {
-            while (pCurr->get_PNext() && pCurr->get_PNext()->node_Value() < new_one->node_Value())
-            {
-                pCurr = pCurr->get_PNext();
-            }
-
-            new_one->set_PBack(pCurr);
-            new_one->set_PNext(pCurr->get_PNext());
-
-            if (pCurr->get_PNext() == nullptr)
-            {
-                pCurr->set_PNext(new_one);
-                _primeT = new_one;
-            }
-            else
-            {
-                pCurr->set_PNext(new_one);
-                new_one->get_PNext()->set_PBack(new_one);
-            }
-        }
-        _primeS++;
+        std::cout << "im fucking here " << std::endl;
+        add_Elem(maybe_prime);
+        _size++;
     }
 }
 
@@ -165,15 +103,15 @@ ADTNode *MagicalContainer::remove_Node(int value)
 
     // pointer on head and after that iterate on the list
     // mean of iterate is to go over element until reach the node with value
-    ADTNode *new_one = _Head;
-    while (new_one)
+    ADTNode *node = _Head;
+    while (node)
     {
-        if (new_one->node_Value() == value)
+        if (node->node_Value() == value)
         {
-            Detached = new_one;
+            Detached = node;
             break;
         }
-        new_one = new_one->get_Next();
+        node = node->get_Next();
     }
     // the deletion part
     if (Detached)
@@ -219,15 +157,15 @@ ADTNode *MagicalContainer::remove_Nodep(int value)
 
     ADTNode *Detached = nullptr;
 
-    ADTNode *new_one = _primeH;
-    while (new_one)
+    ADTNode *node = _primeH;
+    while (node)
     {
-        if (new_one->node_Value() == value)
+        if (node->node_Value() == value)
         {
-            Detached = new_one;
+            Detached = node;
             break;
         }
-        new_one = new_one->get_PNext();
+        node = node->get_PNext();
     }
 
     if (Detached)
@@ -260,24 +198,113 @@ ADTNode *MagicalContainer::remove_Nodep(int value)
     return Detached;
 }
 // bool
-void MagicalContainer::identfy_primeValue(int data)
+int MagicalContainer::identfy_primeValue(int data)
 {
+    if (data < 2)
+        return 0;
 
-    if (data <= 1)
-    {
-        this->_primeValue = false;
-    }
+    if (data == 2)
+        return 1;
 
-    for (int i = 2; i <= sqrt(data); i++)
+    if (data % 2 == 0)
+        return 0;
+
+    for (int i = 3; i <= sqrt(data); i += 2)
     {
         if (data % i == 0)
+            return 0;
+    }
+
+    return 1;
+}
+
+void ariel::MagicalContainer::add_Elem(ADTNode *node)
+{
+    if (_Head == nullptr)
+    {
+        _Head = node;
+        _Tail = node;
+        return;
+    }
+
+    if (node->node_Value() < _Head->node_Value())
+    {
+        node->set_Next(_Head);
+        _Head->set_Back(node);
+        _Head = node;
+        return;
+    }
+
+    ADTNode *iter = _Head;
+    ADTNode *prev = nullptr;
+    while (iter != nullptr && node->node_Value() > iter->node_Value())
+    {
+        prev = iter;
+        iter = iter->get_Next();
+    }
+
+    if (prev == nullptr)
+    {
+        node->set_Next(_Head);
+        _Head->set_Back(node);
+        _Head = node;
+    }
+
+    else
+    {
+        node->set_Next(prev->get_Next());
+        node->set_Back(prev);
+        prev->set_Next(node);
+        if (node->get_Next() == nullptr)
         {
-            // return false;
-            this->_primeValue = false;
-            // there no need to continue
-            break;
+            _Tail = node;
+        }
+
+        else
+        {
+            node->get_Next()->set_Back(node);
         }
     }
-    this->_primeValue = true;
-    // return true;
+}
+
+void ariel::MagicalContainer::insert_Prime(ADTNode *prime_data)
+{
+
+    if (_primeH == nullptr)
+    {
+        _primeH = prime_data;
+        _primeT = prime_data;
+        return;
+    }
+
+    ADTNode *iter = _primeH;
+
+    if (prime_data->node_Value() < iter->node_Value())
+    {
+        prime_data->set_PNext(iter);
+        iter->set_PBack(prime_data);
+        _primeH = prime_data;
+        return;
+    }
+    else
+    {
+        while (iter->get_PNext() && iter->get_PNext()->node_Value() < prime_data->node_Value())
+        {
+            iter = iter->get_PNext();
+        }
+
+        prime_data->set_PBack(iter);
+        prime_data->set_PNext(iter->get_PNext());
+
+        if (iter->get_PNext() == nullptr)
+        {
+            iter->set_PNext(prime_data);
+            _primeT = prime_data;
+        }
+        else
+        {
+            iter->set_PNext(prime_data);
+            prime_data->get_PNext()->set_PBack(prime_data);
+        }
+    }
 }

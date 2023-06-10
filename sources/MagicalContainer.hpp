@@ -28,10 +28,13 @@ namespace ariel
         ADTNode *_primeH; // NOLINT
         ADTNode *_primeT; // NOLINT
 
-        bool _primeValue; // NOLINT
+        int _primeValue; // NOLINT
         // helpe function's;
         ADTNode *remove_Node(int);
         ADTNode *remove_Nodep(int);
+        
+        void add_Elem(ADTNode *);
+        void insert_Prime(ADTNode *);
 
     public:
         // Constructor
@@ -45,7 +48,7 @@ namespace ariel
         // Get the size of the container
         int size() const;
         // to identfy primevalue
-        void identfy_primeValue(int);
+        int identfy_primeValue(int);
 
         class SideCrossIterator // NOLINT
         {
@@ -66,10 +69,10 @@ namespace ariel
             // oprator's
             int operator*();
             SideCrossIterator &operator++();
-            bool operator==(const SideCrossIterator &seconed) const;
-            bool operator!=(const SideCrossIterator &seconed) const;
-            bool operator>(const SideCrossIterator &seconed) const;
-            bool operator<(const SideCrossIterator &seconed) const;
+            bool operator==(const SideCrossIterator &) const;
+            bool operator!=(const SideCrossIterator &) const;
+            bool operator>(const SideCrossIterator &) const;
+            bool operator<(const SideCrossIterator &) const;
         };
         class AscendingIterator // NOLINT
         {
@@ -82,6 +85,8 @@ namespace ariel
             // ctor's
             AscendingIterator(MagicalContainer &);
             AscendingIterator(AscendingIterator &);
+            AscendingIterator(MagicalContainer &, int, ADTNode *);
+
             ~AscendingIterator();
             AscendingIterator &operator=(const AscendingIterator &);
             // the head annd the tail
@@ -90,10 +95,10 @@ namespace ariel
             // oprator's
             int operator*();
             AscendingIterator &operator++();
-            bool operator==(const AscendingIterator &seconed) const;
-            bool operator!=(const AscendingIterator &seconed) const;
-            bool operator>(const AscendingIterator &seconed) const;
-            bool operator<(const AscendingIterator &seconed) const;
+            bool operator==(const AscendingIterator &) const;
+            bool operator!=(const AscendingIterator &) const;
+            bool operator>(const AscendingIterator &) const;
+            bool operator<(const AscendingIterator &) const;
         };
         class PrimeIterator // NOLINT
         {
@@ -114,10 +119,10 @@ namespace ariel
             // oprator's
             int operator*();
             PrimeIterator &operator++();
-            bool operator==(const PrimeIterator &seconed) const;
-            bool operator!=(const PrimeIterator &seconed) const;
-            bool operator>(const PrimeIterator &seconed) const;
-            bool operator<(const PrimeIterator &seconed) const;
+            bool operator==(const PrimeIterator &) const;
+            bool operator!=(const PrimeIterator &) const;
+            bool operator>(const PrimeIterator &) const;
+            bool operator<(const PrimeIterator &) const;
         };
     };
 };

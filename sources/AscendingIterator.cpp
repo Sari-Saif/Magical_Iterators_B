@@ -6,6 +6,11 @@ MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &iter) :
     this->start = iter._Head;
     this->_range = 0;
 }
+
+MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &iter, int size_iter, ADTNode *node) : magic(iter), start(node), _range(size_iter)
+{
+}
+
 MagicalContainer::AscendingIterator::AscendingIterator(AscendingIterator &iter) : magic(iter.magic)
 {
     *this = iter;
@@ -18,18 +23,60 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin()
     AscendingIterator prime(magic);
     return prime;
 }
+
 MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 {
-    AscendingIterator prime(magic);
-    return prime;
+    AscendingIterator end(magic, magic.size(), nullptr);
+    return end;
 }
-// oprator's
-int MagicalContainer::AscendingIterator::operator*() { return 0; }
-MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++() { return *this; }
-bool MagicalContainer::AscendingIterator::operator==(const AscendingIterator &seconed) const { return true; }
-bool MagicalContainer::AscendingIterator::operator!=(const AscendingIterator &seconed) const { return false; }
-bool MagicalContainer::AscendingIterator::operator>(const AscendingIterator &seconed) const { return true; }
-bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator &seconed) const { return true; }
+
+int MagicalContainer::AscendingIterator::operator*()
+{
+    if (!start)
+    {
+        throw std::runtime_error("unkown iter");
+    }
+
+    return (*start).node_Value();
+}
+
+MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
+{
+
+    if (start)
+    {
+        start = start->get_Next();
+        ++_range;
+    }
+    else
+    {
+        throw std::runtime_error("we in the end with no possibilty to iterate more ");
+    }
+
+    return *this;
+}
+
+bool MagicalContainer::AscendingIterator::operator==(const AscendingIterator &seconed) const
+{
+
+    return !(*this < seconed) && !(seconed < *this);
+}
+
+bool MagicalContainer::AscendingIterator::operator!=(const AscendingIterator &seconed) const
+{
+    return !(*this == seconed);
+}
+
+bool MagicalContainer::AscendingIterator::operator>(const AscendingIterator &seconed) const
+{
+    return seconed._range < this->_range;
+}
+
+bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator &seconed) const
+{
+    return seconed._range > this->_range;
+}
+
 /*its important */
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(const AscendingIterator &another)
 {
