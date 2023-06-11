@@ -23,10 +23,6 @@ namespace ariel
         int _size;
         int _primeS; // prime size
         // nodes for linked list
-        ADTNode *_Head;   // NOLINT
-        ADTNode *_Tail;   // NOLINT
-        ADTNode *_primeH; // NOLINT
-        ADTNode *_primeT; // NOLINT
 
         int _primeValue; // NOLINT
         // helpe function's;
@@ -37,6 +33,10 @@ namespace ariel
         void insert_Prime(ADTNode *);
 
     public:
+        ADTNode *_Head;   // NOLINT
+        ADTNode *_Tail;   // NOLINT
+        ADTNode *_primeH; // NOLINT
+        ADTNode *_primeT; // NOLINT
         // Constructor
         MagicalContainer();
         // Destructor
@@ -49,6 +49,10 @@ namespace ariel
         int size() const;
         // to identfy primevalue
         int identfy_primeValue(int);
+        void printNext();
+        void printBack();
+        void print_PBack();
+        void print_PNext();
 
         class SideCrossIterator // NOLINT
         {

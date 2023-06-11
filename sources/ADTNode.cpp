@@ -15,8 +15,8 @@ ADTNode *ADTNode::get_PBack() { return this->prime_Back; }
 
 void ADTNode::set_Next(ADTNode *update) { Next = update; }
 void ADTNode::set_PNext(ADTNode *update) { prime_Next = update; }
-void ADTNode::set_Back(ADTNode *update) { prime_Back = update; }
-void ADTNode::set_PBack(ADTNode *update) { Back = update; }
+void ADTNode::set_Back(ADTNode *update) { Back = update; }
+void ADTNode::set_PBack(ADTNode *update) { prime_Back = update; }
 
 int ADTNode::node_Value()
 {

@@ -3,8 +3,8 @@ using namespace ariel;
 
 MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &iter) : magic(iter)
 {
-    this->start = iter._Head;
-    this->_range = 0;
+    start = iter._Head;
+    _range = 0;
 }
 
 MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &iter, int size_iter, ADTNode *node) : magic(iter), start(node), _range(size_iter)
@@ -15,6 +15,7 @@ MagicalContainer::AscendingIterator::AscendingIterator(AscendingIterator &iter) 
 {
     *this = iter;
 }
+
 MagicalContainer::AscendingIterator::~AscendingIterator() {}
 
 // the head annd the tail
@@ -26,7 +27,7 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::begin()
 
 MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 {
-    AscendingIterator end(magic, magic.size(), nullptr);
+    AscendingIterator end(magic, magic._size, nullptr);
     return end;
 }
 
@@ -37,7 +38,7 @@ int MagicalContainer::AscendingIterator::operator*()
         throw std::runtime_error("unkown iter");
     }
 
-    return (*start).node_Value();
+    return start->node_Value();
 }
 
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
@@ -46,7 +47,7 @@ MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operat
     if (start)
     {
         start = start->get_Next();
-        ++_range;
+        _range++;
     }
     else
     {
@@ -84,6 +85,9 @@ MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operat
     {
         throw std::runtime_error("error : isnot same containers");
     }
+    magic = another.magic;
+    start = another.start;
+    _range = another._range;
 
     return *this;
 }

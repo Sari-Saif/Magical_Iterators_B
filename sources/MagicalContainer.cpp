@@ -4,7 +4,7 @@
 
 using namespace ariel;
 
-MagicalContainer::MagicalContainer() : _Head(nullptr), _Tail(nullptr), _primeT(nullptr), _primeH(nullptr), _size(0), _primeS(0)
+MagicalContainer::MagicalContainer() : _Head(nullptr), _Tail(nullptr), _primeH(nullptr), _size(0), _primeS(0)
 {
 
     this->_primeValue = 0; // this use - to identfy if the inserted new value is prime or not
@@ -61,12 +61,12 @@ void MagicalContainer::removeElement(int data)
  */
 void MagicalContainer::addElement(int data)
 {
-    int prime_defantion = identfy_primeValue(data);
+    bool prime_defantion = identfy_primeValue(data);
     ADTNode *maybe_prime = new ADTNode(data);
+    // std::cout << " the value is : " << prime_defantion << std::endl;
     // in addittion if it's prime node we need to care about it
     if (prime_defantion)
     {
-
         add_Elem(maybe_prime);
         _size++;
         insert_Prime(maybe_prime);
@@ -91,7 +91,6 @@ int MagicalContainer::size() const
 need to check
 */
 
-// TODO:: create print function's to track container operation
 ADTNode *MagicalContainer::remove_Node(int value)
 {
     if (_size == 0)
@@ -255,11 +254,17 @@ void ariel::MagicalContainer::add_Elem(ADTNode *node)
         prev->set_Next(node);
         if (node->get_Next() == nullptr)
         {
+            // std::cout << "im here for ever" << std::endl;
+
             _Tail = node;
+            // std::cout << "the tail value " << _Tail->node_Value() << std::endl;
+            //  prev->set_Next(_Tail);
+            //  _Tail->set_Back(prev);
         }
 
         else
         {
+
             node->get_Next()->set_Back(node);
         }
     }
@@ -286,23 +291,78 @@ void ariel::MagicalContainer::insert_Prime(ADTNode *prime_data)
     }
     else
     {
-        while (iter->get_PNext() && iter->get_PNext()->node_Value() < prime_data->node_Value())
+        while ((iter->get_PNext() != nullptr) && (iter->get_PNext())->node_Value() < prime_data->node_Value())
         {
             iter = iter->get_PNext();
         }
 
         prime_data->set_PBack(iter);
         prime_data->set_PNext(iter->get_PNext());
+        //////////////////////////////////////////////
+        // iter->get_PBack()->set_PNext(prime_data); //
+        // iter->get_PNext()->set_Back(prime_data);  //
 
         if (iter->get_PNext() == nullptr)
         {
             iter->set_PNext(prime_data);
+            prime_data->set_PBack(iter); //
             _primeT = prime_data;
         }
         else
         {
+            prime_data->set_PNext(iter->get_PNext()); //
             iter->set_PNext(prime_data);
-            prime_data->get_PNext()->set_PBack(prime_data);
+
+            (prime_data->get_PNext())->set_PBack(prime_data);
         }
     }
+}
+
+void ariel::MagicalContainer::printNext()
+{
+    ADTNode *v = _Head;
+    while (v != nullptr)
+    {
+        std::cout << "->: " << v->node_Value();
+        v = v->get_Next();
+        // if (_Head == nullptr)
+        // {
+        //     break;
+        // }
+    }
+    std::cout << std::endl;
+}
+void ariel::MagicalContainer::printBack()
+{
+    ADTNode *b = _Tail;
+    while (b)
+    {
+        std::cout << "<-: " << b->node_Value();
+
+        b = b->get_Back();
+    }
+    std::cout << std::endl;
+}
+
+void ariel::MagicalContainer::print_PBack()
+{
+    ADTNode *b = _primeT;
+    while (b)
+    {
+        std::cout << "<-: prime " << b->node_Value();
+
+        b = b->get_PBack();
+    }
+    std::cout << std::endl;
+}
+void ariel::MagicalContainer::print_PNext()
+{
+    ADTNode *v = _primeH;
+    while (v)
+    {
+        std::cout << "-> : prime : " << v->node_Value();
+
+        v = v->get_PNext();
+    }
+    std::cout << std::endl;
 }

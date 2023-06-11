@@ -7,11 +7,6 @@ MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &container) : ma
     this->_range = 0;
 }
 
-// return end
-ariel::MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &iter, int size_iter, ADTNode *node) : magic(iter), start(node), _range(size_iter)
-{
-}
-
 MagicalContainer::PrimeIterator::PrimeIterator(PrimeIterator &iter) : magic(iter.magic)
 {
     *this = iter;
@@ -28,13 +23,12 @@ MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin()
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end()
 {
 
-    PrimeIterator end(magic);
-    end._range = magic._size;
-    end.start = nullptr;
-    return end;
+    PrimeIterator en(magic);
+    en._range = magic._primeS;
+    en.start = nullptr;
+    return en;
+}
 
-} // return SideCrossIterator(nullptr); }
-// oprator's
 int MagicalContainer::PrimeIterator::operator*()
 {
     if (!start)
@@ -49,8 +43,9 @@ MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
 {
     if (start)
     {
+
         start = start->get_PNext();
-        ++_range;
+        _range++;
     }
     else
     {
@@ -62,7 +57,8 @@ MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++()
 
 bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator &seconed) const
 {
-    return !(*this < seconed) && !(seconed < *this);
+
+    return _range == seconed._range;
 }
 
 bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator &seconed) const

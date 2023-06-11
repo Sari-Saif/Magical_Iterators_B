@@ -4,7 +4,7 @@ using namespace ariel;
 MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &iter) : magic(iter), node_fiter(magic._Head), node_tailiter(magic._Tail)
 {
     this->_range = 0;
-    this->access_iter = true; // if we can iterate in the beiging true and will change over the iteration
+    this->access_iter = true; // if we can iterate in the beging true and will change over the iteration
 };
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(SideCrossIterator &iter) : magic(iter.magic)
@@ -39,7 +39,7 @@ int MagicalContainer::SideCrossIterator::operator*()
         {
             return node_fiter->node_Value();
         }
-        throw std::runtime_error("error");
+        throw std::runtime_error("error ");
     }
     else
     {
@@ -62,16 +62,16 @@ MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operat
     {
         node_fiter = node_fiter->get_Next();
         access_iter = false;
-        _range++;
+        
     }
     else if ((!access_iter) && node_tailiter)
     {
         node_tailiter = node_tailiter->get_Back();
         access_iter = true;
-        _range++;
+       
     }
+    _range++;
     // reset the defantion of accessing iteration to iterate
-
     return *this;
 };
 
