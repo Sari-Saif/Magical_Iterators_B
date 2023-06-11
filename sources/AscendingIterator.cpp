@@ -1,12 +1,14 @@
 #include "MagicalContainer.hpp"
 using namespace ariel;
 
+// ctor
 MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &iter) : magic(iter)
 {
     start = iter._Head;
     _range = 0;
 }
 
+// ctor that need to return the end of container
 MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &iter, int size_iter, ADTNode *node) : magic(iter), start(node), _range(size_iter)
 {
 }
@@ -33,6 +35,7 @@ MagicalContainer::AscendingIterator MagicalContainer::AscendingIterator::end()
 
 int MagicalContainer::AscendingIterator::operator*()
 {
+    // if nullptr is unkown itreratore like this
     if (!start)
     {
         throw std::runtime_error("unkown iter");
@@ -43,7 +46,8 @@ int MagicalContainer::AscendingIterator::operator*()
 
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator++()
 {
-
+    // if the head isnot null
+    // iterate over the container by one stand
     if (start)
     {
         start = start->get_Next();
@@ -59,12 +63,13 @@ MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operat
 
 bool MagicalContainer::AscendingIterator::operator==(const AscendingIterator &seconed) const
 {
-
+    // another version to sahy "equal"
     return !(*this < seconed) && !(seconed < *this);
 }
 
 bool MagicalContainer::AscendingIterator::operator!=(const AscendingIterator &seconed) const
 {
+    // not equal - not operation on "==" operator
     return !(*this == seconed);
 }
 
@@ -78,9 +83,9 @@ bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator &sec
     return seconed._range > this->_range;
 }
 
-/*its important */
 MagicalContainer::AscendingIterator &MagicalContainer::AscendingIterator::operator=(const AscendingIterator &another)
 {
+    // copy elements of iterator
     if (&magic != &another.magic)
     {
         throw std::runtime_error("error : isnot same containers");

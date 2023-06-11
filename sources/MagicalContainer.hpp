@@ -58,9 +58,12 @@ namespace ariel
         {
         private:
             MagicalContainer &magic;
+            // pointer for head and tail of container
             ADTNode *node_fiter;
             ADTNode *node_tailiter;
+            // flage if we can iterate over the data structure
             bool access_iter;
+            // the size of container
             int _range;
 
             SideCrossIterator(MagicalContainer &, ADTNode *, ADTNode *);
@@ -72,10 +75,10 @@ namespace ariel
             ~SideCrossIterator();
 
             SideCrossIterator &operator=(const SideCrossIterator &);
-            // the head annd the tail
+            // the head and the tail
             SideCrossIterator begin();
             SideCrossIterator end();
-            // operator's
+            /* operator's*/
             int operator*();
             SideCrossIterator &operator++();
             bool operator==(const SideCrossIterator &) const;

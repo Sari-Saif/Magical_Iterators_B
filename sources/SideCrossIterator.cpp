@@ -53,22 +53,22 @@ int MagicalContainer::SideCrossIterator::operator*()
 
 MagicalContainer::SideCrossIterator &MagicalContainer::SideCrossIterator::operator++()
 {
+    // if we in the end its error - because we operate on nullptr
     if (_range == this->magic._size)
     {
         throw std::runtime_error("we in the end, can't iterate more ");
     }
-
+    // if we can iterate and the head isnot nullptr
     if (access_iter && node_fiter)
     {
         node_fiter = node_fiter->get_Next();
         access_iter = false;
-        
     }
+    // if we cant iterate more and the tail isnt nullptr
     else if ((!access_iter) && node_tailiter)
     {
         node_tailiter = node_tailiter->get_Back();
         access_iter = true;
-       
     }
     _range++;
     // reset the defantion of accessing iteration to iterate

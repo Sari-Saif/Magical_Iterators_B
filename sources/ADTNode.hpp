@@ -11,6 +11,7 @@ namespace ariel
     {
     private:
         int _data;
+        // pointer's to ADTLinked List our designing to container data structure
         ADTNode *Next;
         ADTNode *Back;
         ADTNode *prime_Next;
@@ -28,8 +29,11 @@ namespace ariel
         void set_PNext(ADTNode *);
         void set_Back(ADTNode *);
         void set_PBack(ADTNode *);
+        /*
+            get node value
+        */
         int node_Value();
-        // used for tracking(debuging) and print elements
+        /* using for tracking(debuging) and print elements*/
         friend ostream &operator<<(ostream &input, const ADTNode &);
     };
 
